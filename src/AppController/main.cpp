@@ -11,15 +11,21 @@ int main(int argc, char *argv[])
 
     LoginAuthentication loginAuthenticate;
 
-    QObject::connect(&loginAuthenticate, &LoginAuthentication::loginSuccessful, [](){
+    QObject::connect(&loginAuthenticate, &LoginAuthentication::loginSuccessful, [&](){
         qInfo()<<"Login Successful ....";
+        loginAuthenticate.fetchProfile();
     });
 
     QObject::connect(&loginAuthenticate, &LoginAuthentication::loginFailed, [](){
         qInfo()<<"Login Failed";
     });
 
-    loginAuthenticate.login("test@gmail.com", "mypassword");
+    QObject::connect(&loginAuthenticate, &LoginAuthentication::fetchProfileSuccessful, [&](const QString& user, const QString& email){
+        qInfo()<<user;
+        qInfo()<<email;
+    });
+
+    loginAuthenticate.login("test@example.com", "mypassword");
 
     const QUrl url(QStringLiteral("qrc:/MediaPlayer/main.qml"));
     QObject::connect(
