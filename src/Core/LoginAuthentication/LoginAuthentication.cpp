@@ -26,12 +26,21 @@ void LoginAuthentication::login(QString email, QString password)
         {
             auto json = QJsonDocument::fromJson(reply->readAll()).object();
             m_token = json["token"].toString();
-            storeToken(m_token);
+            storeToken();
             emit loginSuccessful();
-            getToken();
+
+            if(statusRemember)
+            {
+                storeToken();
+            }
+            else
+            {
+                clearToken();
+            }
+            qInfo()<<m_token;
         }
         else {
-            emit loginFailed(reply->errorString());
+            emit loginFailed();
             clearToken();
         }
         reply->deleteLater();
@@ -40,11 +49,6 @@ void LoginAuthentication::login(QString email, QString password)
 
 void LoginAuthentication::fetchProfile()
 {
-    if(!m_token.isEmpty())
-    {
-        qInfo()<<"this is here";
-    }
-
     QUrl url("http://127.0.0.1:8000/profile");
     QNetworkRequest request(url);
     request.setRawHeader("Authorization", "Bearer "+ m_token.toUtf8());
@@ -62,11 +66,20 @@ void LoginAuthentication::fetchProfile()
             emit fetchProfileSuccessful(email, password);
         }
         else {
-            emit fetchProfileFailed(reply->errorString());
+            emit fetchProfileFailed();
             clearToken();
         }
         reply->deleteLater();
     });
+}
+
+void LoginAuthentication::tryAutoLogin()
+{
+    getToken();
+    if(!m_token.isEmpty())
+    {
+        fetchProfile();
+    }
 }
 
 bool LoginAuthentication::loading()
@@ -97,22 +110,20 @@ void LoginAuthentication::setLoading(bool value)
     }
 }
 
-void LoginAuthentication::storeToken(const QString &token)
+void LoginAuthentication::storeToken()
 {
-    QSettings settings;
-    settings.setValue("auth/token", token);
-}
-
-QString LoginAuthentication::getToken()
-{
-    QSettings settings;
-    QString token = settings.value("auth/token", "").toString();
-    qInfo()<<token;
-    return token;
+    QSettings token;
+    token.setValue("auth/token", m_token);
 }
 
 void LoginAuthentication::clearToken()
 {
-    QSettings settings;
-    settings.clear();
+    QSettings token;
+    token.clear();
+}
+
+QString LoginAuthentication::getToken()
+{
+    QSettings token;
+    return token.value("auth/token", "").toString();
 }

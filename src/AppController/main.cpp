@@ -20,13 +20,12 @@ int main(int argc, char *argv[])
         qInfo()<<"Login Failed";
     });
 
-    QObject::connect(&loginAuthenticate, &LoginAuthentication::fetchProfileSuccessful, [&](const QString& email, const QString& user){
-        qInfo()<<"Email:"<<email;
-         qInfo()<<"User:"<<user;
+    QObject::connect(&loginAuthenticate, &LoginAuthentication::fetchProfileSuccessful, [&](const QString& user, const QString& email){
+        qInfo()<<user;
+        qInfo()<<email;
     });
 
     loginAuthenticate.login("test@example.com", "mypassword");
-
 
     const QUrl url(QStringLiteral("qrc:/MediaPlayer/main.qml"));
     QObject::connect(
