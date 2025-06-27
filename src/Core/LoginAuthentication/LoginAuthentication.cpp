@@ -63,6 +63,7 @@ void LoginAuthentication::fetchProfile()
             auto json = QJsonDocument::fromJson(reply->readAll()).object();
             QString email = json["email"].toString();
             QString password = json["user"].toString();
+            emit loginSuccessful();
             emit fetchProfileSuccessful(email, password);
         }
         else {
@@ -125,5 +126,6 @@ void LoginAuthentication::clearToken()
 QString LoginAuthentication::getToken()
 {
     QSettings token;
+    m_token = token.value("auth/token", "").toString();
     return token.value("auth/token", "").toString();
 }
