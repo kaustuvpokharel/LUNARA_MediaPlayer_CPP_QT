@@ -1,3 +1,8 @@
+# pip install fastapi uvicorn   ->after installing this through terminal
+# uvicorn main:app --reload     -> and run the server with this
+# This starts the dummy API at http://127.0.0.1:8000.
+
+
 from fastapi import FastAPI, HTTPException, Header, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
