@@ -1,5 +1,7 @@
 add_executable(App
     main.cpp
+    App.cpp
+    App.hpp
 )
 
 target_include_directories(App
