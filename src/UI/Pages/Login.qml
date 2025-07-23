@@ -25,7 +25,7 @@ Item
     {
         id: background
         anchors.fill: parent
-        color: "#121727"
+        color: App.Palette["color.primary.background"]
     }
 
     ColumnLayout

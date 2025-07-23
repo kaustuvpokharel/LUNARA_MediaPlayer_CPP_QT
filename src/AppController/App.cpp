@@ -1,4 +1,5 @@
 #include "App.hpp"
+#include "ThemeManager.hpp"
 
 App::App(QObject *parent)
 {
@@ -19,4 +20,10 @@ void App::setRemember(bool value)
 void App::tryAutoLogin()
 {
     loginAuthenticate.tryAutoLogin();
+}
+
+QVariantMap App::Palette()
+{
+    QVariantMap palette = ThemeManager::getThemeInstance()->loadTheme();
+    return palette;
 }

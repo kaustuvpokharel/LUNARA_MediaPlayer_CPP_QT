@@ -1,0 +1,19 @@
+{
+    "theme": {
+        "name": "default",
+        "type": "dark",
+        "color": {
+            "primary": {
+                "background": "red",
+                "surface": "#262B38",
+                "elevated": "#40444E",
+                "border": "#404349"
+            },
+            "text": {
+                "regular": "#f2f2f2"
+            }
+        }
+    }
+}
+
+
